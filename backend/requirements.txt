@@ -1,0 +1,29 @@
+fastapi
+uvicorn
+python-dotenv
+requests
+pydantic
+# --- Motores de IA ---
+groq
+google-genai
+#google-genaive
+#google-generativeai -- ahora es google-genai
+cerebras_cloud_sdk
+# --- Generación de PDF ---
+reportlab
+# --- OSINT ---
+python-whois
+# Nota: A veces se llama 'whois' o 'python-whois'. 
+# 'python-whois' es la más común para "import whois".
+beautifulsoup4
+requests-html
+# --- Seguridad y Análisis ---
+#scapy
+#sqlalchemy
+#sqlalchemy-utils
+#3alembic
+#cryptography
+# --- Base de Datos ---
+#psycopg2-binary
+sqlalchemy
+psycopg2-binary

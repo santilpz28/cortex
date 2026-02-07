@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ChainGuard Console | v6.2</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8b5cf6",
+              "primary-dark": "#7c3aed",
+              background: "#050505",
+              surface: "#111111",
+              alert: "#ef4444",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+          },
+        },
+      }
+    </script>
+
+    <style>
+        body { background-color: #050505; color: #e5e5e5; }
+        
+        /* --- EFECTO SPOTLIGHT (LUMINISCENCIA) --- */
+        .glass-panel {
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative; /* Necesario para el efecto */
+            overflow: hidden;   /* Para que la luz no se salga */
+        }
+
+        /* La luz que sigue al ratón */
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            border-radius: inherit;
+            background: radial-gradient(
+                800px circle at var(--mouse-x) var(--mouse-y),
+                rgba(139, 92, 246, 0.15),
+                transparent 40%
+            );
+            opacity: 0; /* Invisible por defecto */
+            transition: opacity 0.5s;
+            pointer-events: none; /* Click through */
+            z-index: 2;
+        }
+
+        /* Al hacer hover, se enciende la luz */
+        .glass-panel:hover::before {
+            opacity: 1;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        
+        /* --- Clases de utilidad para JS --- */
+        .highlight { color: #8b5cf6; }
+        .risk-high { color: #ef4444; font-weight: bold; }
+        .risk-medium { color: #f59e0b; font-weight: bold; }
+        .risk-low { color: #10b981; font-weight: bold; }
+    </style>
+</head>
+
+<body class="font-sans h-screen flex flex-col overflow-hidden selection:bg-primary/30">
+
+<header class="h-16 border-b border-white/5 bg-surface flex items-center px-6 justify-between shrink-0 z-20">
+    <div class="flex items-center gap-3">
+        <div class="size-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+            <span class="material-symbols-outlined">security</span>
+        </div>
+        <span class="font-bold text-lg tracking-tight">CHAIN<span class="text-primary">GUARD</span></span>
+    </div>
+    
+    <div class="flex bg-white/5 p-1 rounded-lg">
+        <button id="btn-mode-audit" onclick="setMode('audit')" class="px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-primary text-white shadow-lg shadow-primary/25">
+            🛡️ Audit
+        </button>
+        <button id="btn-mode-osint" onclick="setMode('osint')" class="px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-all">
+            🕵️‍♂️ OSINT
+        </button>
+    </div>
+
+    <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full">
+            <div class="size-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="text-xs font-mono text-green-400">SYSTEM ONLINE</span>
+        </div>
+    </div>
+</header>
+
+<main class="flex-1 flex overflow-hidden relative" id="main-container">
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#202020_1px,transparent_1px),linear-gradient(to_bottom,#202020_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.05] pointer-events-none"></div>
+
+    <div class="flex-1 flex flex-col lg:flex-row p-6 gap-6 overflow-hidden">
+        
+        <section class="lg:w-1/3 flex flex-col gap-6 shrink-0 h-full overflow-y-auto custom-scrollbar">
+            
+            <div class="glass-panel rounded-xl p-5 flex flex-col gap-4 shadow-2xl group">
+                <div class="flex justify-between items-center relative z-10">
+                    <h3 class="text-white font-semibold flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">input</span>
+                        Input Target
+                    </h3>
+                    <select id="chain-selector" class="bg-black border border-white/10 text-xs rounded px-2 py-1 text-slate-300 outline-none focus:border-primary cursor-pointer">
+                        <option value="1">Ethereum Mainnet</option>
+                        <option value="42161">Arbitrum One</option>
+                        <option value="10">Optimism</option>
+                        <option value="8453">Base</option>
+                        <option value="1399811149">Solana</option>
+                    </select>
+                </div>
+
+                <textarea id="main-input" 
+                    class="w-full h-48 bg-black/50 border border-white/10 rounded-lg p-4 font-mono text-sm text-slate-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none placeholder-slate-600 custom-scrollbar relative z-10"
+                    placeholder="Pega aquí el código del contrato o la dirección (0x...)..."></textarea>
+
+                <button class="btn-audit w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 group relative z-10">
+                    <span class="material-symbols-outlined group-hover:rotate-90 transition-transform">bolt</span>
+                    EJECUTAR ANÁLISIS
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="glass-panel p-4 rounded-xl">
+                    <div class="text-slate-500 text-xs uppercase mb-1 relative z-10">Motores Activos</div>
+                    <div class="text-xl font-bold text-white flex items-center gap-2 relative z-10">
+                        3 <span class="text-xs font-normal bg-white/10 px-1.5 rounded">AI + OSINT</span>
+                    </div>
+                </div>
+                <div class="glass-panel p-4 rounded-xl">
+                    <div class="text-slate-500 text-xs uppercase mb-1 relative z-10">Database</div>
+                    <div class="text-xl font-bold text-green-400 flex items-center gap-2 relative z-10">
+                        Connected <span class="material-symbols-outlined text-sm">database</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="flex-1 h-full min-h-[500px] flex flex-col">
+            <div class="glass-panel rounded-xl flex-1 flex flex-col overflow-hidden shadow-2xl border-primary/20 relative">
+                
+                <div class="h-12 bg-surface border-b border-white/5 flex items-center px-4 justify-between shrink-0 relative z-10">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-[18px] animate-pulse">terminal</span>
+                        <span class="text-xs font-mono text-primary font-bold">NEXO TERMINAL OUTPUT</span>
+                    </div>
+                    <button id="btn-download-pdf" class="hidden text-xs bg-white/5 hover:bg-white/10 text-white px-3 py-1.5 rounded border border-white/10 transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[14px]">picture_as_pdf</span>
+                        Descargar PDF
+                    </button>
+                </div>
+
+                <div id="result-area" class="flex-1 bg-[#0a0a0a] p-6 overflow-y-auto font-mono text-sm leading-relaxed custom-scrollbar relative z-10">
+                    
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-slate-600 opacity-50 pointer-events-none">
+                        <span class="material-symbols-outlined text-6xl mb-4">manage_search</span>
+                        <p>Esperando objetivo...</p>
+                    </div>
+
+                    <div id="res-content-wrapper">
+                        <div id="res-header" style="display:none" class="mb-4 pb-4 border-b border-white/10">
+                            <h2 id="res-title" class="text-xl font-bold text-white mb-1"></h2>
+                            <p id="res-desc" class="text-slate-400"></p>
+                        </div>
+                        <div id="res-details" class="text-slate-300 whitespace-pre-wrap"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script src="script.js"></script>
+
+<script>
+    // 1. LÓGICA DEL EFECTO SPOTLIGHT (MOUSE TRACKING)
+    const container = document.getElementById("main-container");
+    const cards = document.querySelectorAll(".glass-panel");
+
+    container.onmousemove = e => {
+        for(const card of cards) {
+            const rect = card.getBoundingClientRect(),
+                  x = e.clientX - rect.left,
+                  y = e.clientY - rect.top;
+
+            // Enviamos las coordenadas CSS al elemento
+            card.style.setProperty("--mouse-x", `${x}px`);
+            card.style.setProperty("--mouse-y", `${y}px`);
+        }
+    };
+
+    // 2. LÓGICA DE CAMBIO DE MODO VISUAL
+    function setMode(mode) {
+        const btnAudit = document.getElementById('btn-mode-audit');
+        const btnOsint = document.getElementById('btn-mode-osint');
+        const input = document.getElementById('main-input');
+        const actionBtn = document.querySelector('.btn-audit');
+        const chainSel = document.getElementById('chain-selector');
+
+        if(mode === 'audit') {
+            btnAudit.className = "px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-primary text-white shadow-lg shadow-primary/25";
+            btnOsint.className = "px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-all";
+            input.placeholder = "Pega código Solidity o dirección (0x...)...";
+            actionBtn.innerHTML = '<span class="material-symbols-outlined">bolt</span> AUDITAR CÓDIGO';
+            chainSel.style.display = 'block';
+        } else {
+            btnOsint.className = "px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-blue-600 text-white shadow-lg shadow-blue-600/25";
+            btnAudit.className = "px-4 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white transition-all";
+            input.placeholder = "Usuario (ej: vitalik) o Email objetivo...";
+            actionBtn.innerHTML = '<span class="material-symbols-outlined">search</span> INVESTIGAR OBJETIVO';
+            chainSel.style.display = 'none';
+        }
+        
+        // Conectar con script.js
+        if(typeof window.currentMode !== 'undefined') {
+            window.currentMode = mode;
+        }
+    }
+</script>
+
+</body>
+</html>

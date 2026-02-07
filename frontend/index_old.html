@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainCortex | AI Security Auditor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo rápido para el selector (puedes moverlo a style.css luego) */
+        .chain-select {
+            background: #111;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 0 15px;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            cursor: pointer;
+            outline: none;
+            display: none; /* Oculto por defecto, JS lo muestra en modo Audit */
+        }
+        .chain-select:hover { border-color: #8b5cf6; }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <nav>
+        <div class="logo">CHAIN<span class="highlight">CORTEX</span></div>
+        <div class="menu">
+            <a href="#">Audit</a>
+            <a href="#">Docs</a>
+            <a href="#" class="btn-login">Login</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="hero">
+            <h1>Auditoría Inteligente de <br><span class="gradient-text">Smart Contracts</span></h1>
+            <p>Detecta vulnerabilidades críticas en segundos usando Inteligencia Artificial y análisis estático.</p>
+
+        <div class="mode-switcher">
+            <button class="mode-btn active" id="btn-mode-audit" onclick="setMode('audit')">🛡️ Código</button>
+            <button class="mode-btn" id="btn-mode-osint" onclick="setMode('osint')">🕵️‍♂️ OSINT</button>
+        </div>
+
+            <div class="cta-container">
+                <select id="chain-selector" class="chain-select">
+                    <option value="1">Ethereum Mainnet</option>
+                    <option value="42161">Arbitrum One</option>
+                    <option value="10">Optimism Mainnet</option>
+                    <option value="8453">Base Mainnet</option>
+                    <option value="137">Polygon POS</option>
+                    <option value="56">BNB Smart Chain</option>
+                </select>
+
+                <input type="text" id="main-input" placeholder="Pega código Solidity o 0x..." class="input-contract">
+                <button class="btn-audit">AUDITAR AHORA</button>
+            </div>
+
+        <div id="result-area" class="result-card" style="display: none;">
+            <div class="result-header">
+                <span id="res-icon"></span>
+                <h3 id="res-title">Resultado</h3>
+            </div>
+            <p id="res-desc"></p>
+            <div class="code-details" id="res-details"></div>
+            <div class="result-header">
+        <span id="res-icon"></span>
+        <h3 id="res-title">Resultado</h3>
+    </div>
+
+    <p id="res-desc"></p>
+    <div class="code-details" id="res-details"></div>
+
+    <button id="btn-download-pdf" class="btn-pdf" style="display: none;">
+        📄 DESCARGAR INFORME OFICIAL
+    </button>
+        </div>
+        </div>
+
+        <div class="cards-container" id="cards">
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>🛡️ Detección de Reentrancy</h3>
+                    <p>Análisis profundo de patrones de llamadas externas para prevenir ataques de reentrada.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>⚡ Gas Optimization</h3>
+                    <p>Sugerencias automáticas para reducir el coste de gas de tus funciones Solidity.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>🧠 Lógica IA</h3>
+                    <p>Nuestro modelo entrenado entiende la intencionalidad del código, no solo la sintaxis.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

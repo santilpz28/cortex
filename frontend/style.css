@@ -1,0 +1,252 @@
+:root {
+    --bg-color: #050505;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --primary: #8b5cf6; /* Violeta */
+    --secondary: #3b82f6; /* Azul */
+    --text: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+/* Fondo de malla sutil */
+.grid-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 10%;
+}
+
+.logo { font-weight: 700; font-size: 1.5rem; letter-spacing: 2px; }
+.highlight { color: var(--primary); }
+.menu a { color: #aaa; text-decoration: none; margin-left: 2rem; transition: 0.3s; }
+.menu a:hover { color: #fff; }
+
+.hero {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 1rem; }
+.gradient-text {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cta-container {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.input-contract {
+    padding: 1rem;
+    width: 300px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #111;
+    color: white;
+}
+
+.btn-audit {
+    padding: 1rem 2rem;
+    background: var(--primary);
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+/* --- EFECTO SPOTLIGHT XELAB --- */
+.cards-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 4rem 10%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    cursor: pointer;
+    position: relative;
+    height: 260px;
+    width: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden; /* Importante para contener el brillo */
+}
+
+/* El contenido está encima del brillo */
+.card-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Capa de brillo que se mueve con JS */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(
+        600px circle at var(--mouse-x) var(--mouse-y),
+        rgba(255, 255, 255, 0.1),
+        transparent 40%
+    );
+    z-index: 1;
+    opacity: 0; /* Invisible hasta que pasas el mouse */
+    transition: opacity 0.5s;
+}
+
+.cards-container:hover .card::before {
+    opacity: 1;
+}
+
+/* Borde brillante extra */
+.card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(
+        400px circle at var(--mouse-x) var(--mouse-y),
+        rgba(139, 92, 246, 0.4),
+        transparent 40%
+    );
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+/* --- RESULTADOS --- */
+.result-card {
+    margin: 2rem auto; /* Centrado */
+    max-width: 600px;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    text-align: left;
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Animación de entrada suave */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.result-header h3 { margin: 0; font-size: 1.2rem; }
+
+/* Estilos de éxito y error */
+.success-border { border-color: #4ade80; box-shadow: 0 0 15px rgba(74, 222, 128, 0.2); }
+.success-text { color: #4ade80; }
+
+.error-border { border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
+.error-text { color: #ef4444; }
+
+.code-details {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-top: 1rem;
+    border-left: 3px solid var(--primary);
+}
+/* --- SWITCHER DE MODO --- */
+.mode-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.mode-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #888;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.mode-btn:hover { border-color: var(--primary); color: #fff; }
+
+.mode-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+/* Ajuste para resultados OSINT (Listas limpias) */
+.osint-list { list-style: none; padding: 0; margin: 0; }
+.osint-list li {
+    background: rgba(255,255,255,0.05);
+    margin-bottom: 5px;
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+.osint-link { color: var(--secondary); text-decoration: none; }
+
+.btn-pdf {
+    background: linear-gradient(45deg, #FF4B2B, #FF416C); /* Rojo corporativo */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: transform 0.2s;
+}
+.btn-pdf:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+}

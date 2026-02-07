@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # --- CEREBRO (Python) ---
+  backend:
+    build: ./backend
+    container_name: chainguard_cortex
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db  # Espera a que la base de datos arranque
+    networks:
+      - chain-net
+    environment:
+      - DATABASE_URL=postgresql://guarduser:guardpassword@db:5432/chainguard_db
+
+  # --- MEMORIA (Base de Datos) --- 🆕 NUEVO SERVICIO
+  db:
+    image: postgres:15-alpine
+    container_name: chainguard_db
+    restart: always
+    environment:
+      POSTGRES_USER: guarduser
+      POSTGRES_PASSWORD: guardpassword
+      POSTGRES_DB: chainguard_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistencia de datos
+    networks:
+      - chain-net
+
+  # --- INTERFAZ (PHP/Apache) ---
+  frontend:
+    build: ./frontend
+    container_name: chainguard_ui
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - chain-net
+    environment:
+      - API_URL=http://backend:8000
+
+volumes:
+  postgres_data: # Definición del volumen
+
+networks:
+  chain-net:
+    driver: bridge
