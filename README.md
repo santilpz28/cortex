@@ -1,113 +1,116 @@
-🛡️ ChainCortex (Beta)
-Advanced Web3 Security Scanner & OSINT Intelligence
-(Insertar captura de pantalla de la UI aquí)
+Markdown
+# 🛡️ ChainCortex (Beta)
+### Advanced Web3 Security Scanner & OSINT Intelligence
 
-ChainCortex es una herramienta de ciberseguridad Web3 diseñada como "Primera Línea de Defensa" para inversores retail y auditores. No busca competir con auditorías profundas (como Zellic o Certik), sino ofrecer un análisis rápido (5-10s) para detectar Red Flags, vulnerabilidades críticas y riesgos de centralización antes de interactuar con un contrato.
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.10-blue?style=flat-square&logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.95-009688?style=flat-square&logo=fastapi)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
 
-👉 Demo en vivo: https://chain-cortex.com
+> **"The First Line of Defense for Retail Investors."**
 
-🚀 Key Features
-1. 🧠 Hydra AI Orchestrator
-Sistema de orquestación de LLMs resiliente.
+---
 
-Failover Automático: Si Groq (Llama-3-70b) alcanza su límite, el sistema cambia automáticamente a Google Gemini en milisegundos.
+## 🖼️ Dashboard Preview
 
-Cero Downtime: El usuario nunca recibe un error 429 Too Many Requests.
+![ChainCortex Dashboard]
+*(Reemplaza esta línea con una captura real de tu interfaz Cyberpunk)*
 
-2. 🦀 Solana RPC Tactical Engine
-A diferencia de los analizadores tradicionales que intentan leer bytecode de Solana (y fallan), ChainCortex interroga directamente a la Mainnet (RPC) para validar hechos matemáticos:
+---
 
-Mint Authority Check: ¿Puede el creador imprimir tokens infinitos?
+## 🚀 About The Project
 
-Freeze Authority Check: ¿Pueden congelar tu wallet?
+**ChainCortex** no es otra herramienta de análisis estático. Es un ecosistema de ciberseguridad diseñado para **democratizar la auditoría de Smart Contracts**.
 
-Supply Analysis: Verificación de datos on-chain reales.
+A diferencia de las firmas de auditoría tradicionales que tardan semanas y cuestan miles de dólares, ChainCortex ofrece un análisis de **reconocimiento táctico en segundos**. Combina la potencia de **LLMs (Llama-3 & Gemini)** con verificación de datos **On-Chain en tiempo real (RPC)** e inteligencia de fuentes abiertas (**OSINT**).
 
-3. 🛡️ EVM Vulnerability Scanner
-Descarga y analiza código verificado de Etherscan/BscScan buscando patrones de ataque clásicos:
+👉 **Live Demo:** [https://chain-cortex.com](https://chain-cortex.com)
 
-Reentrancy Attacks.
+---
 
-Oracle Manipulation (Flash Loans).
+## 🔥 Key Features
 
-Unchecked External Calls.
+### 🧠 1. Hydra AI Orchestrator
+Un sistema de IA resiliente y redundante.
+* **Failover Automático:** Si el proveedor principal (Groq) falla o alcanza el límite de rate, el sistema cambia instantáneamente a Google Gemini.
+* **Zero Downtime:** Arquitectura diseñada para mantener el servicio activo incluso bajo estrés de API.
 
-Honeypot Logic.
+### 🦀 2. Solana RPC Tactical Engine
+La mayoría de scanners fallan en Solana porque intentan "leer" el bytecode. ChainCortex consulta directamente a la **Mainnet**:
+* **Mint Authority Check:** Detecta si el creador puede imprimir tokens infinitos.
+* **Freeze Authority Check:** Alerta si la wallet del desarrollador puede congelar fondos de usuarios.
+* **Supply Validation:** Datos matemáticos reales vs declarados.
 
-4. 🕵️‍♂️ Hybrid OSINT Module
-La seguridad no es solo código, es identidad.
+### 🛡️ 3. EVM Vulnerability Scanner
+Para Ethereum y compatibles (BSC, Polygon...), analizamos el código fuente verificado en busca de:
+* Reentrancy Attacks.
+* Oracle Manipulation (Flash Loan Risks).
+* Unchecked External Calls.
+* Honeypot Logic & Ownership Renouncement.
 
-Project vs. Wallet: Detecta si la dirección pertenece a un usuario o a un contrato.
+### 🕵️‍♂️ 4. Hybrid OSINT Module
+Rastreamos la huella digital más allá del código:
+* **Identidad vs Proyecto:** Diferenciación automática entre Wallets personales y Contratos.
+* **Digital Footprint:** Búsqueda automatizada en GitHub, Twitter, Dune Analytics y bases de datos de hacks (Rekt.news).
 
-Digital Footprint: Busca rastros del creador en GitHub, Twitter, Dune Analytics y bases de datos de hacks (Rekt.news).
+---
 
-5. ⚡ Smart Caching (PostgreSQL)
-Implementación de arquitectura eficiente:
+## 🛠️ Tech Stack
 
-Cada auditoría se guarda en base de datos.
+| Componente | Tecnología | Descripción |
+| :--- | :--- | :--- |
+| **Backend** | ![Python](https://img.shields.io/badge/-Python-black?logo=python) **FastAPI** | API de alto rendimiento asíncrono. |
+| **AI Engine** | ![Groq](https://img.shields.io/badge/-Groq-orange) ![Google](https://img.shields.io/badge/-Gemini-blue) | Modelos Llama-3-70b y Gemini 1.5 Flash. |
+| **Database** | ![Postgres](https://img.shields.io/badge/-PostgreSQL-336791?logo=postgresql) | Caché inteligente para reducir costes de API. |
+| **Infra** | ![Docker](https://img.shields.io/badge/-Docker-2496ED?logo=docker) | Contenerización completa con Docker Compose. |
+| **Blockchain** | **RPC / Etherscan** | Conexión directa a nodos para validación. |
 
-Si un usuario consulta un contrato ya auditado < 24h, la respuesta es instantánea (0ms) y coste cero de API.
+---
 
-🛠️ Tech Stack
-Backend: Python (FastAPI).
+## 🔧 Installation (Local)
 
-AI Engine: Groq (Llama-3), Google Gemini.
+Si quieres desplegar tu propia instancia de ChainCortex:
 
-Blockchain Data: Etherscan API, Solana RPC, Solscan.
-
-Database: PostgreSQL (Production) / SQLite (Dev).
-
-Containerization: Docker & Docker Compose.
-
-Frontend: HTML5/JS (Cyberpunk UI).
-
-🔧 Installation & Local Setup
-Si quieres correr tu propia instancia de ChainCortex:
-
-Prerrequisitos
-Docker & Docker Compose
-
-API Keys (Groq, Gemini, Etherscan, Solscan)
-
-1. Clonar el Repositorio
-Bash
-git clone https://github.com/TU_USUARIO/ChainCortex.git
+### 1. Clonar Repositorio
+```bash
+git clone [https://github.com/TU_USUARIO/ChainCortex.git](https://github.com/TU_USUARIO/ChainCortex.git)
 cd ChainCortex
 2. Configurar Variables de Entorno
-Crea un archivo .env en la raíz:
+Crea un archivo .env en la raíz (puedes copiar .env.example):
 
 Bash
-cp .env.example .env
-Y rellena tus claves:
-
-Fragmento de código
 GROQ_API_KEY="gsk_..."
 GEMINI_API_KEY="AIza..."
 ETHERSCAN_API_KEY="YourKey"
 SOLSCAN_API_KEY="YourKey"
-DATABASE_URL="postgresql://user:pass@db:5432/chainguard"
+DATABASE_URL="sqlite:///./local_backup.db" # Para desarrollo local
 3. Desplegar con Docker
 Bash
 docker-compose up -d --build
-El backend estará disponible en http://localhost:8000 y la UI en http://localhost:8080.
+Frontend UI: http://localhost:8080
 
-📖 Usage Examples
-Auditoría de Contrato (API)
+Backend API: http://localhost:8000/docs
+
+📖 API Usage
+ChainCortex expone una API RESTful documentada en Swagger.
+
+Ejemplo: Auditar Contrato
 HTTP
 POST /auditar
 Content-Type: application/json
 
 {
-  "code_snippet": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+  "code_snippet": "0xdAC17F958D2ee523a2206206994597C13D831ec7", // USDT Address
   "chain_id": "1"
 }
-Investigación OSINT
-HTTP
-POST /investigar
-Content-Type: application/json
-
+Ejemplo: Respuesta (JSON)
+JSON
 {
-  "target": "vitalik.eth"
+  "veredicto": "PRECAUCIÓN",
+  "riesgo": 45,
+  "tipo_vulnerabilidad": "Centralización",
+  "explicacion": "El contrato tiene funciones de Pausa y Blacklist controladas por el owner..."
 }
 🗺️ Roadmap
 [x] EVM Static Analysis
@@ -116,31 +119,26 @@ Content-Type: application/json
 
 [x] OSINT Module (Web2 + Web3)
 
-[x] PDF Report Generation
+[x] Producción: Despliegue en VPS con SSL/HTTPS
 
-[ ] Support for Tron & Base
+[ ] Support for Tron & Base Chains
 
-[ ] Telegram Bot Integration
+[ ] Telegram Bot Integration for alerts
 
 🤝 Contributing
-Las contribuciones son bienvenidas. Por favor, abre un Issue para discutir cambios mayores antes de enviar un Pull Request.
+Las contribuciones son bienvenidas. Si tienes ideas para mejorar el motor de detección o añadir nuevas redes:
 
-📄 License
-Este proyecto está bajo la licencia MIT. Eres libre de usarlo, modificarlo y distribuirlo.
+Haz un Fork del proyecto.
+
+Crea una rama (git checkout -b feature/AmazingFeature).
+
+Haz Commit (git commit -m 'Add some AmazingFeature').
+
+Haz Push (git push origin feature/AmazingFeature).
+
+Abre un Pull Request.
 
 🎓 Acknowledgments
-Proyecto desarrollado como parte del Trabajo Final de Grado (TFG) y optimizado con conocimientos de ciberseguridad Web3 impartidos por @0xjmaria.
+Proyecto desarrollado como parte del Trabajo Final de Grado (TFG). Especial agradecimiento a @0xjmaria por la mentoría en seguridad Web3 y Smart Contract Auditing.
 
-Built with 💻 and ☕ by Santiago López.
-
-💡 Tip Pro:
-No olvides crear un archivo llamado .env.example en tu repo que tenga solo los nombres de las variables VACÍAS, para que la gente sepa qué poner sin ver tus claves reales:
-
-Archivo .env.example:
-
-Fragmento de código
-GROQ_API_KEY=""
-GEMINI_API_KEY=""
-ETHERSCAN_API_KEY=""
-SOLSCAN_API_KEY=""
-DATABASE_URL="sqlite:///./local.db"
+Built with 💻, ☕ and 🛡️ by Santiago López.
