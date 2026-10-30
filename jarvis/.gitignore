@@ -1,0 +1,30 @@
+# Secrets
+*.key
+*.pem
+*.env
+.env*
+secrets/
+*.secret
+*_token
+*_api_key
+api_key
+telegram_token
+
+# Config with credentials
+openclaw.json
+openclaw.json.bak*
+config.json
+settings.json
+
+# Memory / logs with private data
+memory/
+*.log
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
