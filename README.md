@@ -42,7 +42,7 @@ that runs on local LLMs. The operational layer lives in [`jarvis/`](jarvis/) —
 health checks, report generation, queue delivery and the auto-healing scripts
 that keep this platform alive without anyone watching it.
 
-[→ JARVIS docs](jarvis/README.md)
+[→ JARVIS repo](https://github.com/santilpz28/Jarvis) · [→ in-tree docs](jarvis/README.md)
 
 ---
 
