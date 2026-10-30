@@ -5,7 +5,7 @@
 **Production-grade microservices platform for smart contract risk analysis and crypto scam detection.**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://santilpz28.github.io/chainguard-pages/)
-[![Backend Health](https://img.shields.io/badge/API-Online-success?style=for-the-badge&logo=fastapi&logoColor=white)](https://chainguard.santilpz28.com/)
+[![Backend Health](https://img.shields.io/badge/API-Online-success?style=for-the-badge&logo=fastapi&logoColor=white)](https://chain-cortex.com/)
 [![Tests](https://img.shields.io/badge/Tests-34%2F34-success?style=for-the-badge&logo=pytest&logoColor=white)](#testing)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
@@ -32,6 +32,17 @@ ChainGuard is a **multi-chain risk intelligence platform** that combines on-chai
 - **34/34 security tests passing** (15 explicit injection attacks: SQLi, XSS, SSTI, Log4Shell, command injection, path traversal, prototype pollution, null bytes)
 - **Hydra AI orchestrator** — multi-model failover (Groq + Cerebras + Gemini) with <200ms fallback
 - **Web3 wallet auth** — EIP-712 typed-data signatures, no third-party custodians
+
+---
+
+## 🤖 JARVIS — the agent that runs this stack
+
+ChainGuard is deployed and watched by **JARVIS**, a self-hosted AI security agent
+that runs on local LLMs. The operational layer lives in [`jarvis/`](jarvis/) —
+health checks, report generation, queue delivery and the auto-healing scripts
+that keep this platform alive without anyone watching it.
+
+[→ JARVIS docs](jarvis/README.md)
 
 ---
 
