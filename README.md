@@ -16,6 +16,17 @@
 
 </div>
 
+
+---
+
+<p align="center">
+  <img src="docs/architecture.png" alt="Architecture at a glance" width="100%">
+</p>
+
+### Architecture at a glance
+
+ChainGuard turns scattered signals — on-chain activity, OSINT reputation, repository metadata and AI triage — into a single **0-100 risk score** for any Web3 domain, contract or address. On-chain and OSINT data is fetched, normalised and validated behind a 3-layer whitelist (JS client → PHP proxy → Python backend) with the same regex enforced at every layer. The Hydra orchestrator routes each triage to Groq, Cerebras or Gemini, failing over in under 200 ms. Every score ships with the signals that produced it, and every known exploit opens a didactic modal.
+
 ---
 
 ## 🎯 What is ChainGuard.ai?
